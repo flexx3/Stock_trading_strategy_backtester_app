@@ -1,0 +1,11 @@
+pandas
+numpy
+yfinance
+sqlite3
+plotly
+cufflinks
+backtrader
+sys
+io
+dash==2.9.3
+dash_bootstrap_components
