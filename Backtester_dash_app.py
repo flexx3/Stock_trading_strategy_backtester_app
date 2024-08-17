@@ -61,7 +61,7 @@ dbc.Navbar(
             dbc.NavItem(html.H4('Reach Me'), style = {'text-align':'center'}),
             dbc.NavItem(html.Hr()),
             dbc.NavItem(dbc.NavLink(html.Img(src = sidebar_logo_src2,
-                                             style = {'height':'60px'}),href = 'https://github.com/flex3'),
+                                             style = {'height':'60px'}),href = 'https://github.com/flexx3'),
                         style = {'padding':'16px'}),
             dbc.NavItem(dbc.NavLink(html.Img(src = sidebar_logo_src1,
                                              style = {'height':'60px'}),
