@@ -6,7 +6,7 @@ import cufflinks as cf
 from plotly.offline import iplot, init_notebook_mode
 
 #instantiate and enable cufflinks in offline mode
-init_notebook_mode(connected= True)
+#init_notebook_mode(connected= True)
 cf.go_offline()
 
 class chart_selector:
