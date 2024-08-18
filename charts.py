@@ -5,8 +5,6 @@ from plotly import graph_objects as go
 import cufflinks as cf
 from plotly.offline import iplot
 
-cf.go_offline()
-
 class chart_selector:
 
     def plot_return(self, data, ticker):
