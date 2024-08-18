@@ -9,3 +9,4 @@ sys
 io
 dash==2.9.3
 dash_bootstrap_components
+gunicorn
