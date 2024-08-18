@@ -3,7 +3,6 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from plotly import graph_objects as go
 import cufflinks as cf
-from plotly.offline import iplot
 
 class chart_selector:
 
