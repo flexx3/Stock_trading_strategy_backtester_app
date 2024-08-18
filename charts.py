@@ -3,10 +3,8 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from plotly import graph_objects as go
 import cufflinks as cf
-from plotly.offline import iplot, init_notebook_mode
+from plotly.offline import iplot
 
-#instantiate and enable cufflinks in offline mode
-#init_notebook_mode(connected= True)
 cf.go_offline()
 
 class chart_selector:
