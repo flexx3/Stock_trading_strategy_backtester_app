@@ -1,7 +1,6 @@
 pandas
 numpy
 yfinance
-sqlite3
 plotly
 cufflinks
 backtrader
