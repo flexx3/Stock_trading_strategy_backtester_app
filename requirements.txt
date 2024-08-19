@@ -1,4 +1,4 @@
-pandas
+pandas==2.0.3
 numpy
 yfinance
 plotly==5.14.1
