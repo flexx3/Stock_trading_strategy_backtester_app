@@ -37,7 +37,7 @@ class chart_selector:
         qf= cf.quant_figure.QuantFig(data,title= f"{ticker}'s stock price", legend= 'top', name= f'{ticker}')
         qf.add_volume()
         qf.add_sma(periods= 10, name= '10period sma')
-        qf.add_sma(name= '20period sma', color= 'red')
+        qf.add_sma(name= '20period sma')
         qf.add_rsi(periods= 7, rsi_upper= 80, rsi_lower= 20)
         figure = qf.iplot(asFigure=True)
         return figure
@@ -45,8 +45,8 @@ class chart_selector:
     def plot_ema_rsi(self, data, ticker):
         qf= cf.quant_figure.QuantFig(data,title= f"{ticker}'s stock price", legend= 'top', name= f'{ticker}')
         qf.add_volume()
-        qf.add_ema(periods=10, color= 'green', name= '10period ema')
-        qf.add_ema(periods=20, color= 'red', name= '20period ema')
+        qf.add_ema(periods=10,  name= '10period ema')
+        qf.add_ema(periods=20,  name= '20period ema')
         qf.add_rsi(periods= 7, rsi_upper= 80, rsi_lower= 20)
         figure = qf.iplot(asFigure=True)
         return figure
@@ -55,7 +55,7 @@ class chart_selector:
         qf= cf.quant_figure.QuantFig(data,title= f"{ticker}'s stock price", legend= 'top', name= f'{ticker}')
         qf.add_volume()
         qf.add_bollinger_bands()
-        qf.add_ema(periods=50, color= 'green', name= '10period ema')
+        qf.add_ema(periods=50, name= '10period ema')
         qf.add_rsi(periods= 7, rsi_upper= 80, rsi_lower= 20)
         figure = qf.iplot(asFigure=True)
         return figure
