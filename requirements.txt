@@ -1,5 +1,5 @@
-pandas
-numpy
+pandas==2.0.3
+numpy==1.23.1
 yfinance
 plotly==5.14.1
 cufflinks
