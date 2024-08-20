@@ -27,7 +27,7 @@ class chart_selector:
 
     def plot_price_only(self, data, ticker):
         qf= cf.quant_figure.QuantFig(data,title= f"{ticker}'s stock price", legend= 'top', name= f'{ticker}')
-        #qf.add_volume()
+        qf.add_volume()
         #qf.add_rsi(periods= 7, rsi_upper= 80, rsi_lower= 20)
         figure = qf.iplot(asFigure=True)
         return figure
