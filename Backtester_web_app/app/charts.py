@@ -18,32 +18,18 @@ load_dotenv()
 
 class chart_selector:
     #general function to get data
-    def wrangle(self, ticker, start_date, end_date):
-        #create the url object
-        url= URL.create(
-    "postgresql+psycopg",
-    username=os.environ.get('DB_USERNAME'),
-    password=os.environ.get('DB_PASSWORD'),
-    host=os.environ.get('DB_HOST'),
-    port=os.environ.get('DB_PORT'),
-    database=os.environ.get('DB_NAME'))
-        #instantiate sqlalchemy engine
-        engine= create_engine(url)
-        #connect to database
+    def wrangle(ticker, start_date, end_date):
+        #setup conection to db
+        engine= create_engine(f"duckdb:///{os.environ.get('DB_NAME')}")
         with engine.connect() as conn:
-            #query to check if table exists
-            query= f''' SELECT EXISTS(
-            SELECT 1 FROM pg_tables
-            WHERE tablename = '{ticker}' AND schemaname = 'public');
-            '''
-            result = conn.execute(text(query))
-        table_exists= result.scalar()
-        #load data if table exists
-        if table_exists is True:
-            #instantiate 'dbrepo' class from data.py library
-            repo= Db_Repo()
+            #check if table exists
+            result= conn.execute(text(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{ticker}'"))
+            table_name= result.fetchone()
+        if table_name is not None:
+            #instantiate 'sqlrepo' class from data.py library
+            repo= Db_Repo(uri=f"duckdb:///{os.environ.get('DB_NAME')}")
             #load data from table
-            df= repo.read_data(ticker)
+            df= repo.read_table(ticker)
             #search through dataframe to get data between 'start_date' and 'end_date'
             df= df.filter(pl.col('Date').is_between(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(end_date, '%Y-%m-%d')))
             #gets fresh data from api if specific range of data is not available from the database
@@ -52,7 +38,7 @@ class chart_selector:
                 data= api.get_data_from_api()
                 repo.insert_data(table_name=ticker, records=data)
                 #load data from table
-                df= repo.read_data(ticker)
+                df= repo.read_table(ticker)
                 #search through dataframe to get data between 'start_date' and 'end_date'
                 df= df.filter(pl.col('Date').is_between(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(end_date, '%Y-%m-%d')))
             else:
@@ -61,8 +47,8 @@ class chart_selector:
             #instantiate 'api_data' class from data.py library
             api= stock_data_api(ticker)
             data= api.get_data_from_api()
-            #instantiate 'dbrepo' class from data.py library
-            repo= Db_Repo()
+            #instantiate 'sqlrepo' class from data.py library
+            repo= Db_Repo(uri=f"duckdb:///{os.environ.get('DB_NAME')}")
             #setup connection to execute and commit changes to the db based on the below query
             with engine.connect() as conn:
                 conn.execute(text(f'Drop Table If Exists "{ticker}"'))
@@ -70,7 +56,7 @@ class chart_selector:
             #insert data into database
             repo.insert_data(table_name=ticker, records=data)
             #load data from table
-            df=repo.read_data(ticker)
+            df=repo.read_table(ticker)
             #search through dataframe to get data between 'start_date' and 'end_date'
             df= df.filter(pl.col('Date').is_between(datetime.strptime(start_date, '%Y-%m-%d'), datetime.strptime(end_date, '%Y-%m-%d')))
         return df
