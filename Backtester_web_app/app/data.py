@@ -1,7 +1,8 @@
 import requests
 import pandas as pd
 import polars as pl
-from sqlalchemy import create_engine, text,URL 
+import duckdb
+from sqlalchemy import create_engine
 import numpy as np
 import os
 from dotenv import load_dotenv
@@ -40,39 +41,29 @@ class stock_data_api:
         )
         return df3
             
+#load into a db
 class Db_Repo:
-    #setup init values
-    def __init__(
-        self,
-        url_object= URL.create(
-    "postgresql+psycopg",
-    username=os.environ.get('DB_USERNAME'),
-    password=os.environ.get('DB_PASSWORD'),
-    host=os.environ.get('DB_HOST'),
-    port=os.environ.get('DB_PORT'),
-    database=os.environ.get('DB_NAME')
-)
-    ):
-        self.url_object= url_object
-
-    #load data into postgres database
+    
+    def __init__(self, uri):
+        self.uri = uri
+        
+    #function to insert collected data from polars into a database
     def insert_data(self, table_name, records):
-        #create sqlalchemy engine
-        engine= create_engine(self.url_object)
-        #setup connection to database
-        with engine.connect() as conn:
-            n_transactions = records.write_database(table_name=table_name, connection=conn, if_table_exists='replace')
-        return n_transactions
-
-    #read data from database
-    def read_data(self, table_name):
-        #create sqlalchemy engine
-        engine= create_engine(self.url_object)
+        #create connection to database using sqlalchemy
+        conn = create_engine(self.uri)
+        n_transactions = records.write_database(table_name=table_name, connection=conn.connect(), if_table_exists='replace')
+        return(f'No of transactons: {n_transactions}')
+        
+    #function to read database data from a dataframe object
+    def read_table(self, table_name):
+        #create connection to database using sqlalchemy
+        conn = create_engine(self.uri)
         #sql query to read data from database
         query = f"""
-        SELECT * FROM "{table_name}"
+        SELECT * FROM '{table_name}'
         """
-        #setup connection to database
-        with engine.connect() as conn:
-            df = pl.read_database(query, connection=conn)
+        #specify index column while reading the data into a dataframe
+        df = pl.read_database(query, connection=conn.connect())
+        #set to datetime index
+        #df.index = pd.to_datetime(df.index)
         return df
