@@ -18,7 +18,7 @@ load_dotenv()
 
 class chart_selector:
     #general function to get data
-    def wrangle(ticker, start_date, end_date):
+    def wrangle(self, ticker, start_date, end_date):
         #setup conection to db
         engine= create_engine(f"duckdb:///{os.environ.get('DB_NAME')}")
         with engine.connect() as conn:
