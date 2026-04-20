@@ -6,7 +6,7 @@ requests==2.32.3
 pandas==2.2.2
 polars-lts-cpu==1.28.1
 sqlalchemy==2.0.34
-psycopg
+duckdb==1.2.1
 pyarrow>=14.0.0
 cufflinks==0.17.3
 gunicorn
