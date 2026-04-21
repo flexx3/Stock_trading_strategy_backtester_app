@@ -7,6 +7,7 @@ pandas==2.2.2
 polars-lts-cpu==1.28.1
 sqlalchemy==2.0.34
 duckdb==1.2.1
+duckdb-engine==0.17.0
 pyarrow>=14.0.0
 cufflinks==0.17.3
 gunicorn
